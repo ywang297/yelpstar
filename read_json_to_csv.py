@@ -2,7 +2,7 @@
 """
 Created on Fri Sep 14 02:59:58 2018
 
-@author: Yishu
+@author: yishu
 """
 
 import pandas as pd
@@ -21,7 +21,6 @@ tip.to_csv('tip.csv', index=False, sep=',')
 ##lead to computer failure review = pd.read_json('yelp_academic_dataset_review.json', lines=True)
 f = open('yelp_academic_dataset_review.json', encoding='utf8')
 data = f.readlines()
-import numpy as np
 
 
 line_t = [line.rstrip('\n') for line in data[:600000]]
@@ -96,32 +95,6 @@ review_0['cool'] = pd.to_numeric(review_0['cool'])
 ## reorder columns
 cols=['review_id', 'user_id', 'business_id', 'stars', 'date', 'text', 'useful', 'funny', 'cool']
 review_0 = review_0[cols]
-review_0.to_csv("C:\\Users\\Tao\\Downloads\\Yelp_data_Yishu\\review_9.csv", index=False, sep=',')
+review_0.to_csv("\yishu\Documents\insight\review_9.csv", index=False, sep=',')
 
 
-""" Next user.json?? Also quite big """
-
-
-
-""" Let's first select those reviews with business_id in business_TOR.csv """
-business_tor = pd.read_csv("C:\\Users\\Tao\\Downloads\\Yelp_data_Yishu\\business_TOR.csv", sep=',')
-business_tor_list = business_tor['business_id'].unique()
-reviews_tor =[]
-for i in np.arange(10):
-    review = pd.read_csv("C:\\Users\\Tao\\Downloads\\Yelp_data_Yishu\\review_"+str(i)+".csv", sep=',')
-    reviews_tor.append(review.loc[review['business_id'].isin(business_tor_list)])
-review_tor_all = pd.concat(reviews_tor)        
-review_tor_all.to_csv("C:\\Users\\Tao\\Downloads\\Yelp_data_Yishu\\review_TOR.csv", index=False, sep=',')
-
-""" Next we also need an version of data combining review_tor_all with business_tor """
-reviewAndbusiness_tor = review_tor_all.merge(business_tor, on='business_id', suffixes=('_review', '_business'))
-reviewAndbusiness_tor.to_csv("C:\\Users\\Tao\\Downloads\\Yelp_data_Yishu\\review_and_business_TOR.csv", index=False, sep=',')
-
-
-""" Now we read in tips.csv, filter out toronto business, and combine business information. """
-tips = pd.read_csv("C:\\Users\\Tao\\Downloads\\Yelp_data_Yishu\\tip.csv", sep=',')
-tips_tor = tips.loc[tips['business_id'].isin(business_tor_list)]
-tips_tor.to_csv("C:\\Users\\Tao\\Downloads\\Yelp_data_Yishu\\tip_TOR.csv", index=False, sep=',')
-
-tipsAndbusiness_tor = tips_tor.merge(business_tor, on='business_id', suffixes=('_tip', '_business'))
-tipsAndbusiness_tor.to_csv("C:\\Users\\Tao\\Downloads\\Yelp_data_Yishu\\tip_and_business_TOR.csv", index=False, sep=',')
